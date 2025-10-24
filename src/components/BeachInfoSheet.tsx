@@ -251,7 +251,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
             ) : (
               <div className="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-200">
                 <h5 className="font-semibold text-orange-800 mb-2">🌟 No Cleanups Yet!</h5>
-                <p className="text-orange-700 text-sm">Be the first to register a cleanup at this beach and help keep Aruba's shores pristine!</p>
+                <p className="text-orange-700 text-sm">Be the first to register a cleanup at this beach and help keep Aruba&apos;s shores pristine!</p>
               </div>
             )}
             
@@ -397,7 +397,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
               
               {/* CAPTCHA */}
               <div className="pt-2">
-                <div className="text-xs text-gray-600 mb-2">Please verify you're not a robot:</div>
+                <div className="text-xs text-gray-600 mb-2">Please verify you&apos;re not a robot:</div>
                 <HCaptcha
                   ref={captchaRef}
                   sitekey="10000000-ffff-ffff-ffff-000000000001"

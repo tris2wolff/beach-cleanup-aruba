@@ -45,7 +45,7 @@ export function ContactPopover() {
           <div className="space-y-2 text-center bg-white p-4 rounded-lg">
             <h4 className="text-xl font-bold leading-none">Get in Touch</h4>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Have questions about beach cleanups or want to report an issue? We'd love to hear from you!
+              Have questions about beach cleanups or want to report an issue? We&apos;d love to hear from you!
             </p>
           </div>
           

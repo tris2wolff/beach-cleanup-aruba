@@ -133,13 +133,13 @@ export default function AboutPage() {
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Our Mission</h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-6">
-            At Aruba Clean Beaches, we are passionate about preserving the natural beauty of Aruba's coastline. 
+            At Aruba Clean Beaches, we are passionate about preserving the natural beauty of Aruba&apos;s coastline. 
             Our mission is to create a community-driven platform that empowers locals and visitors to actively 
             participate in beach cleanup efforts while tracking the health and cleanliness of our precious beaches.
           </p>
           <p className="text-lg text-gray-700 leading-relaxed mb-6">
             We believe that every small action counts. By providing an interactive map showing beach conditions 
-            and organizing cleanup events, we're building a sustainable future for Aruba's marine ecosystem.
+            and organizing cleanup events, we&apos;re building a sustainable future for Aruba&apos;s marine ecosystem.
           </p>
         </div>
 
@@ -258,7 +258,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <p className="text-lg text-gray-700 mb-4">
-                Have questions about beach cleanups or want to report an issue? We'd love to hear from you!
+                Have questions about beach cleanups or want to report an issue? We&apos;d love to hear from you!
               </p>
               <div className="bg-gradient-to-r from-slate-50 to-slate-100 p-4 rounded-lg">
                 <p className="text-lg font-medium text-slate-700">📧 Contact Form</p>
@@ -341,7 +341,7 @@ export default function AboutPage() {
         <div className="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl shadow-xl p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Ready to Make a Difference?</h3>
           <p className="text-lg mb-6 opacity-90">
-            Join our community of beach protectors and help keep Aruba's coastline pristine for future generations.
+            Join our community of beach protectors and help keep Aruba&apos;s coastline pristine for future generations.
           </p>
           <Button 
             onClick={() => window.location.href = '/'}

@@ -225,7 +225,7 @@ export default function HomePage() {
               </div>
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-800 text-center">
-                  💡 <strong>Tip:</strong> Click "View" to see the beach on the map and register a cleanup!
+                  💡 <strong>Tip:</strong> Click &quot;View&quot; to see the beach on the map and register a cleanup!
                 </p>
               </div>
             </div>

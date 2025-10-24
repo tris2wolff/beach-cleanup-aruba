@@ -74,3 +74,10 @@ out/
 
 # Vercel
 .vercel
+
+# Large video files
+public/videos/
+src/assets/videos/
+*.mp4
+*.mov
+*.avi

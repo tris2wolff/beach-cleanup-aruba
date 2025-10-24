@@ -49,6 +49,8 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [showConfetti, setShowConfetti] = useState(false);
   const captchaRef = useRef<HCaptcha>(null);
 
   // Use Firebase hook
@@ -101,19 +103,36 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
   const handleCleanupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate CAPTCHA
-    if (!captchaToken) {
-      alert('Please complete the "I am not a robot" verification.');
-      return;
+    // Clear previous validation errors
+    setValidationErrors([]);
+    
+    // Validate form fields
+    const errors: string[] = [];
+    
+    if (!cleanupData.date) {
+      errors.push('Please select a date for the cleanup.');
+    } else {
+      // Validate date - prevent future dates
+      const selectedDate = new Date(cleanupData.date);
+      const today = new Date();
+      today.setHours(23, 59, 59, 999); // End of today
+      
+      if (selectedDate > today) {
+        errors.push('Please select a date that is today or in the past.');
+      }
     }
     
-    // Validate date - prevent future dates
-    const selectedDate = new Date(cleanupData.date);
-    const today = new Date();
-    today.setHours(23, 59, 59, 999); // End of today
+    if (!cleanupData.contributorName.trim()) {
+      errors.push('Please enter your name.');
+    }
     
-    if (selectedDate > today) {
-      alert('Please select a date that is today or in the past. Future dates are not allowed.');
+    if (!captchaToken) {
+      errors.push('Please complete the "I\'m not a robot" verification.');
+    }
+    
+    // If there are validation errors, show them and return
+    if (errors.length > 0) {
+      setValidationErrors(errors);
       return;
     }
     
@@ -140,7 +159,9 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         photoUrl: photoUrl
       });
 
-      alert('Cleanup submitted successfully!');
+      // Show success message and confetti
+      triggerConfetti();
+      alert('🎉 Cleanup saved successfully! Thank you for helping keep Aruba\'s beaches clean!');
       setShowCleanupForm(false);
       setCleanupData({
         beach: beach.name,
@@ -161,9 +182,12 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
     }
   };
 
-  const handleCloseSheet = () => {
-    setShowCleanupForm(false);
-    setShowPastCleanups(false);
+  const triggerConfetti = () => {
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 3000);
+  };
+
+  const resetForm = () => {
     setCleanupData({
       beach: beach.name,
       date: '',
@@ -172,9 +196,15 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       contributorName: '',
       photoUrl: ''
     });
-    // Reset CAPTCHA
     setCaptchaToken(null);
+    setValidationErrors([]);
     captchaRef.current?.resetCaptcha();
+  };
+
+  const handleCloseSheet = () => {
+    setShowCleanupForm(false);
+    setShowPastCleanups(false);
+    resetForm();
     onClose();
   };
 
@@ -233,12 +263,48 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
             
             {/* Most Recent Cleanup Info - Always visible */}
             {pastCleanups.length > 0 ? (
-              <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <h5 className="font-semibold text-blue-800 mb-2">📊 Most Recent Cleanup</h5>
-                <div className="text-sm">
-                  <p className="text-blue-700"><strong>Date:</strong> {pastCleanups[0].date}</p>
-                  <p className="text-blue-700"><strong>Cleanliness:</strong> {pastCleanups[0].cleanliness}/10</p>
-                  <p className="text-blue-600 text-xs mt-1">{pastCleanups[0].description}</p>
+              <div className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200 shadow-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h5 className="font-bold text-blue-800 mb-3 flex items-center">
+                      📊 <span className="ml-2">Most Recent Cleanup</span>
+                    </h5>
+                    <div className="space-y-2">
+                      <div className="flex items-center">
+                        <span className="text-blue-600 font-medium w-20">Date:</span>
+                        <span className="text-blue-800">{pastCleanups[0].date}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-blue-600 font-medium w-20">Rating:</span>
+                        <div className="flex items-center">
+                          <span className="text-blue-800">{pastCleanups[0].cleanliness}/10</span>
+                          <div className="ml-2 flex">
+                            {[...Array(5)].map((_, i) => (
+                              <span key={i} className={i < Math.floor(pastCleanups[0].cleanliness/2) ? 'text-yellow-400' : 'text-gray-300'}>⭐</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        <span className="text-blue-600 font-medium w-20">By:</span>
+                        <span className="text-blue-800">{pastCleanups[0].contributorName}</span>
+                      </div>
+                      {pastCleanups[0].description && (
+                        <div className="mt-2">
+                          <p className="text-blue-700 text-sm bg-blue-100 p-2 rounded-lg">{pastCleanups[0].description}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  {pastCleanups[0].photoUrl && (
+                    <div className="ml-4 flex-shrink-0">
+                      <img 
+                        src={pastCleanups[0].photoUrl} 
+                        alt="Cleanup photo" 
+                        className="w-16 h-16 object-cover rounded-lg shadow-sm border border-blue-200"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
@@ -285,6 +351,20 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         ) : (
           <div className="px-4 pb-4">
             <form onSubmit={handleCleanupSubmit} className="space-y-3">
+              {/* Validation Errors */}
+              {validationErrors.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                  <div className="flex items-center mb-2">
+                    <span className="text-red-600 mr-2">⚠️</span>
+                    <h4 className="font-semibold text-red-800">Please fix the following issues:</h4>
+                  </div>
+                  <ul className="list-disc list-inside space-y-1">
+                    {validationErrors.map((error, index) => (
+                      <li key={index} className="text-red-700 text-sm">{error}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
                   <div>
                     <Label htmlFor="date" className="text-sm font-semibold">Cleanup Date</Label>
                     <Input
@@ -405,7 +485,10 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                   <div className="flex space-x-2 pt-2 pb-2">
                     <Button 
                       type="button"
-                      onClick={() => setShowCleanupForm(false)}
+                      onClick={() => {
+                        setShowCleanupForm(false);
+                        resetForm();
+                      }}
                       disabled={isSubmitting}
                       className="flex-1 bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white border-0"
                     >
@@ -428,7 +511,30 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
 
   if (isMobile) {
     return (
-      <Drawer open={isOpen} onOpenChange={handleCloseSheet}>
+      <>
+        {/* Confetti Animation */}
+        {showConfetti && (
+          <div className="fixed inset-0 pointer-events-none z-50">
+            {[...Array(50)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute animate-ping"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 3}s`,
+                  animationDuration: `${1 + Math.random() * 2}s`,
+                }}
+              >
+                <span className="text-2xl">
+                  {['🎉', '✨', '🌟', '💫', '🎊'][Math.floor(Math.random() * 5)]}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+        
+        <Drawer open={isOpen} onOpenChange={handleCloseSheet}>
         <DrawerContent className="bg-white">
           <div className="h-[70vh] bg-white rounded-t-2xl flex flex-col">
             <div className="flex items-center justify-center p-4 relative flex-shrink-0">
@@ -439,6 +545,15 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
               >
                 ×
               </button>
+              {/* Scroll indicator */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-gray-400 animate-bounce">
+                <div className="flex flex-col items-center">
+                  <span className="text-xs">Scroll down</span>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
             </div>
             <div className="flex-1 overflow-y-auto px-4 pb-20">
               {content}
@@ -450,7 +565,30 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={handleCloseSheet}>
+    <>
+      {/* Confetti Animation */}
+      {showConfetti && (
+        <div className="fixed inset-0 pointer-events-none z-50">
+          {[...Array(50)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-ping"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${1 + Math.random() * 2}s`,
+              }}
+            >
+              <span className="text-2xl">
+                {['🎉', '✨', '🌟', '💫', '🎊'][Math.floor(Math.random() * 5)]}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+      
+      <Sheet open={isOpen} onOpenChange={handleCloseSheet}>
       <SheetContent side="right" className="w-[400px] sm:w-[540px] bg-white border-0 shadow-2xl p-0 overflow-y-auto">
         <SheetHeader className="px-6 pt-6 pb-4">
           <SheetTitle className="text-2xl font-bold text-gray-900">{beach.name}</SheetTitle>

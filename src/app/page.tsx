@@ -94,12 +94,13 @@ export default function HomePage() {
             animation: spin-360 0.8s ease-in-out;
           }
           .gm-control-active {
-            transform: translateY(-10px) scale(0.9) !important;
+            transform: translateY(-20px) scale(0.8) !important;
+            z-index: 1000 !important;
           }
         `
       }} />
           {/* Header */}
-          <div className={`absolute top-0 left-0 right-0 z-10 ${isMobile ? 'pt-[-3px]' : ''}`}>
+          <div className={`absolute top-0 left-0 right-0 z-10 ${isMobile ? 'pt-[-13px]' : ''}`}>
             <div className={`px-6 ${isMobile ? 'py-2' : 'py-6'}`}>
                   <div className={`flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'} ${isMobile ? 'flex-row' : ''}`}>
                     <span className={`${isMobile ? 'text-2xl mr-2' : 'text-5xl mr-4'} ${showAnimations ? 'animate-bounce' : ''}`}>🌊</span>
@@ -118,7 +119,7 @@ export default function HomePage() {
                     {isMobile && (
                       <div className="flex space-x-3">
                         <button 
-                          className={`bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-3 rounded-full text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
+                          className={`bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-[10px] rounded-full text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
                           onClick={() => setShowPriorityList(true)}
                         >
                           🚨 Urgent Cleanups
@@ -149,7 +150,7 @@ export default function HomePage() {
       {!isMobile && (
         <div className="absolute top-16 right-6 z-20">
           <Button 
-            className={`bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white border-0 px-8 py-[18px] rounded-full text-lg font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
+            className={`bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white border-0 px-8 py-[16px] rounded-full text-lg font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
             onClick={() => setShowPriorityList(true)}
           >
             🚨 Urgent Cleanups

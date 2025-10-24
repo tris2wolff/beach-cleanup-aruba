@@ -96,7 +96,7 @@ export function ContactPopover() {
               />
             </div>
             
-            <Button className="w-full h-10 bg-gradient-to-r from-teal-400 to-teal-500 hover:from-teal-500 hover:to-teal-600 text-white border-0 text-sm font-semibold">
+            <Button className="w-full h-10 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white border-0 text-sm font-semibold">
               Send Message
             </Button>
           </div>

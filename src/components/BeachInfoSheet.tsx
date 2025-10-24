@@ -60,7 +60,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
     date: cleanup.date,
     cleanliness: cleanup.rating,
     description: cleanup.description || 'No description provided',
-    name: cleanup.contributorName || 'Anonymous',
+    contributorName: cleanup.contributorName || 'Anonymous',
     photoUrl: cleanup.photoUrl || '/images/sample-cleanup.jpg'
   })) : [];
 
@@ -165,10 +165,11 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
     setShowCleanupForm(false);
     setShowPastCleanups(false);
     setCleanupData({
+      beach: beach.name,
       date: '',
-      cleanliness: 5,
+      rating: 5,
       description: '',
-      name: '',
+      contributorName: '',
       photoUrl: ''
     });
     // Reset CAPTCHA

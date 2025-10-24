@@ -4,6 +4,33 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
+/* Mobile zoom fix - prevent zoom on input focus */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="date"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    transform: scale(1) !important;
+  }
+  
+  /* Prevent zoom on focus */
+  input:focus,
+  textarea:focus,
+  select:focus {
+    font-size: 16px !important;
+    transform: scale(1) !important;
+  }
+  
+  /* Ensure viewport returns to normal after input */
+  body {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+}
+
 html, body {
   height: 100%;
   margin: 0;

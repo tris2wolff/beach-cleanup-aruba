@@ -164,7 +164,14 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       triggerConfetti();
       setShowSuccessNotification(true);
       setTimeout(() => setShowSuccessNotification(false), 3000);
-      setShowCleanupForm(false);
+      
+      // Auto-exit after showing celebration
+      setTimeout(() => {
+        setShowCleanupForm(false);
+        setShowPastCleanups(false);
+        onClose(); // This will close the sheet/slide and return to map
+      }, 2000); // Wait 2 seconds to show celebration, then exit
+      
       setCleanupData({
         beach: beach.name,
         date: '',
@@ -178,7 +185,8 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       captchaRef.current?.resetCaptcha();
     } catch (error) {
       console.error('Error submitting cleanup:', error);
-      setValidationErrors(['Failed to submit cleanup. Please check your internet connection and try again.']);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setValidationErrors([`Failed to submit cleanup: ${errorMessage}. Please check your internet connection and try again.`]);
     } finally {
       setIsSubmitting(false);
     }
@@ -614,7 +622,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       
       {/* Success Notification */}
       {showSuccessNotification && (
-        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
           <div className="flex items-center">
             <span className="text-xl mr-2">🎉</span>
             <span className="font-semibold">Cleanup saved successfully!</span>

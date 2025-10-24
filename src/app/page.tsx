@@ -100,11 +100,11 @@ export default function HomePage() {
             <div className={`px-6 ${isMobile ? 'py-2' : 'py-6'}`}>
                   <div className={`flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'} ${isMobile ? 'flex-row' : ''}`}>
                     <span className={`${isMobile ? 'text-2xl mr-2' : 'text-5xl mr-4'} ${showAnimations ? 'animate-bounce' : ''}`}>🌊</span>
-                    <h1 className={`${isMobile ? 'text-xl' : 'text-4xl'} font-bold bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-lg ${isMobile ? 'text-center' : ''}`}>Aruba Clean Beaches</h1>
+                    <h1 className={`${isMobile ? 'text-2xl' : 'text-4xl'} font-bold bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-lg ${isMobile ? 'text-center' : ''}`}>Aruba Clean Beaches</h1>
                     <span className={`${isMobile ? 'text-2xl ml-2' : 'text-5xl ml-4'} ${showAnimations ? 'animate-bounce' : ''}`}>🌊</span>
                   </div>
-                  <p className={`${isMobile ? 'text-xs' : 'text-lg'} text-white drop-shadow-md text-center ${isMobile ? 'mb-1' : 'mb-3'}`}>Help clean our beaches and care for our environment</p>
-                  <p className={`${isMobile ? 'text-xs' : 'text-base'} text-white drop-shadow-md text-center ${isMobile ? 'mb-2' : 'mb-4'}`}>📍 Click any marker to see beach details</p>
+                  <p className={`${isMobile ? 'text-sm' : 'text-lg'} text-white drop-shadow-md text-center ${isMobile ? 'mb-1' : 'mb-3'}`}>Help clean our beaches and care for our environment</p>
+                  <p className={`${isMobile ? 'text-sm' : 'text-base'} text-white drop-shadow-md text-center ${isMobile ? 'mb-2' : 'mb-4'}`}>📍 Click any marker to see beach details</p>
                   <div className={`text-center ${isMobile ? 'space-y-2' : 'space-y-3'}`}>
                     <button 
                       className={`bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white ${isMobile ? 'px-6 py-3 text-sm' : 'px-8 py-4 text-lg'} rounded-full font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
@@ -115,7 +115,7 @@ export default function HomePage() {
                     {isMobile && (
                       <div className="flex space-x-3">
                         <button 
-                          className={`bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-[10px] rounded-full text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
+                          className={`bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-[10px] rounded-full text-xs font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''}`}
                           onClick={() => setShowPriorityList(true)}
                         >
                           🚨 Urgent Cleanups

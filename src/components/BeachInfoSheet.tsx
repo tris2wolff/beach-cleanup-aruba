@@ -35,24 +35,16 @@ interface BeachInfoSheetProps {
   onClose: () => void;
 }
 
-interface CleanupData {
-  date: string;
-  cleanliness: number;
-  description: string;
-  name: string;
-  photoUrl: string;
-}
-
 export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) {
   const [isMobile, setIsMobile] = React.useState(false);
   const [showCleanupForm, setShowCleanupForm] = useState(false);
   const [showPastCleanups, setShowPastCleanups] = useState(false);
   const [cleanupData, setCleanupData] = useState<CleanupData>({
-    beachName: beach.name,
+    beach: beach.name,
     date: '',
     rating: 5,
     description: '',
-    name: '',
+    contributorName: '',
     photoUrl: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +60,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
     date: cleanup.date,
     cleanliness: cleanup.rating,
     description: cleanup.description || 'No description provided',
-    name: cleanup.name || 'Anonymous',
+    name: cleanup.contributorName || 'Anonymous',
     photoUrl: cleanup.photoUrl || '/images/sample-cleanup.jpg'
   })) : [];
 
@@ -144,18 +136,18 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         date: cleanupData.date,
         rating: cleanupData.rating,
         description: cleanupData.description,
-        contributorName: cleanupData.name,
+        contributorName: cleanupData.contributorName,
         photoUrl: photoUrl
       });
 
       alert('Cleanup submitted successfully!');
       setShowCleanupForm(false);
       setCleanupData({
-        beachName: beach.name,
+        beach: beach.name,
         date: '',
         rating: 5,
         description: '',
-        name: '',
+        contributorName: '',
         photoUrl: ''
       });
       // Reset CAPTCHA
@@ -267,7 +259,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                                 <p className="font-medium text-sm">{cleanup.date}</p>
                                 <p className="text-xs text-gray-600">Cleanliness: {cleanup.cleanliness}/10</p>
                                 <p className="text-xs text-gray-500 mt-1">{cleanup.description}</p>
-                                <p className="text-xs text-blue-600 mt-1">By: {cleanup.name}</p>
+                                <p className="text-xs text-blue-600 mt-1">By: {cleanup.contributorName}</p>
                               </div>
                               {cleanup.photoUrl && (
                                 <img 
@@ -370,8 +362,8 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                 <Input
                   id="name"
                   type="text"
-                  value={cleanupData.name}
-                  onChange={(e) => setCleanupData(prev => ({ ...prev, name: e.target.value }))}
+                  value={cleanupData.contributorName}
+                  onChange={(e) => setCleanupData(prev => ({ ...prev, contributorName: e.target.value }))}
                   placeholder="Enter your name"
                   className="mt-1"
                 />

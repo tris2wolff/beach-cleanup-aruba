@@ -114,9 +114,16 @@ export default function AboutPage() {
         {/* Video Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="aspect-video w-full bg-black">
-            <video controls poster="/images/vector-wooden-sign-on-the-beach.jpg" className="w-full h-full object-cover">
-              <source src="/videos/arubacleanbeaches.mp4" type="video/mp4" />
-            </video>
+            <iframe 
+              width="100%" 
+              height="100%" 
+              src="https://www.youtube.com/embed/Gz3B4fZJ-Dc"
+              title="Aruba Clean Beaches Video"
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
+              className="w-full h-full"
+            ></iframe>
           </div>
           <div className="p-4 text-center">
             <div className="md:hidden">

@@ -511,7 +511,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
 
   if (isMobile) {
     return (
-      <>
+      <React.Fragment>
         {/* Confetti Animation */}
         {showConfetti && (
           <div className="fixed inset-0 pointer-events-none z-50">
@@ -561,11 +561,12 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
           </div>
         </DrawerContent>
       </Drawer>
+      </React.Fragment>
     );
   }
 
   return (
-    <>
+    <React.Fragment>
       {/* Confetti Animation */}
       {showConfetti && (
         <div className="fixed inset-0 pointer-events-none z-50">
@@ -598,5 +599,6 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         </div>
       </SheetContent>
     </Sheet>
+    </React.Fragment>
   );
 }

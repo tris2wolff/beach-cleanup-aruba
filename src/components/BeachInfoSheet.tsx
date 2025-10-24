@@ -101,6 +101,54 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
     }
   };
 
+  // Compress image to reduce file size
+  const compressImage = async (blob: Blob): Promise<File> => {
+    return new Promise((resolve) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+      
+      img.onload = () => {
+        // Calculate new dimensions (max 800px width/height)
+        const maxSize = 800;
+        let { width, height } = img;
+        
+        if (width > height) {
+          if (width > maxSize) {
+            height = (height * maxSize) / width;
+            width = maxSize;
+          }
+        } else {
+          if (height > maxSize) {
+            width = (width * maxSize) / height;
+            height = maxSize;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Draw and compress
+        ctx?.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((compressedBlob) => {
+          if (compressedBlob) {
+            const file = new File([compressedBlob], 'cleanup-photo.jpg', { 
+              type: 'image/jpeg',
+              lastModified: Date.now()
+            });
+            resolve(file);
+          } else {
+            // Fallback to original blob
+            const file = new File([blob], 'cleanup-photo.jpg', { type: 'image/jpeg' });
+            resolve(file);
+          }
+        }, 'image/jpeg', 0.8); // 80% quality
+      };
+      
+      img.src = URL.createObjectURL(blob);
+    });
+  };
+
   const handleCleanupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -143,11 +191,19 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       // Upload image if provided
       let photoUrl = cleanupData.photoUrl;
       if (cleanupData.photoUrl && cleanupData.photoUrl.startsWith('data:')) {
-        // Convert data URL to file and upload
-        const response = await fetch(cleanupData.photoUrl);
-        const blob = await response.blob();
-        const file = new File([blob], 'cleanup-photo.jpg', { type: 'image/jpeg' });
-        photoUrl = await uploadImage(file, beach.name);
+        try {
+          // Convert data URL to file and upload
+          const response = await fetch(cleanupData.photoUrl);
+          const blob = await response.blob();
+          
+          // Compress image if it's too large
+          const compressedFile = await compressImage(blob);
+          photoUrl = await uploadImage(compressedFile, beach.name);
+        } catch (uploadError) {
+          console.error('Image upload failed:', uploadError);
+          // If upload fails, don't include photoUrl
+          photoUrl = '';
+        }
       }
 
       // Add cleanup to Firebase
@@ -169,7 +225,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       setTimeout(() => {
         setShowCleanupForm(false);
         setShowPastCleanups(false);
-        onClose(); // This will close the sheet/slide and return to map
+        handleCloseSheet(); // Use handleCloseSheet instead of onClose directly
       }, 2000); // Wait 2 seconds to show celebration, then exit
       
       setCleanupData({
@@ -556,7 +612,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         
         {/* Success Notification */}
         {showSuccessNotification && (
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
+          <div className="fixed top-[180px] left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
             <div className="flex items-center">
               <span className="text-xl mr-2">🎉</span>
               <span className="font-semibold">Cleanup saved successfully!</span>
@@ -622,7 +678,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       
       {/* Success Notification */}
       {showSuccessNotification && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
+        <div className="fixed top-[200px] left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
           <div className="flex items-center">
             <span className="text-xl mr-2">🎉</span>
             <span className="font-semibold">Cleanup saved successfully!</span>

@@ -51,6 +51,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const captchaRef = useRef<HCaptcha>(null);
 
   // Use Firebase hook
@@ -161,7 +162,8 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
 
       // Show success message and confetti
       triggerConfetti();
-      alert('🎉 Cleanup saved successfully! Thank you for helping keep Aruba\'s beaches clean!');
+      setShowSuccessNotification(true);
+      setTimeout(() => setShowSuccessNotification(false), 3000);
       setShowCleanupForm(false);
       setCleanupData({
         beach: beach.name,
@@ -176,7 +178,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       captchaRef.current?.resetCaptcha();
     } catch (error) {
       console.error('Error submitting cleanup:', error);
-      alert('Failed to submit cleanup. Please try again.');
+      setValidationErrors(['Failed to submit cleanup. Please check your internet connection and try again.']);
     } finally {
       setIsSubmitting(false);
     }
@@ -296,13 +298,19 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                       )}
                     </div>
                   </div>
-                  {pastCleanups[0].photoUrl && (
+                  {pastCleanups[0].photoUrl ? (
                     <div className="ml-4 flex-shrink-0">
                       <img 
                         src={pastCleanups[0].photoUrl} 
                         alt="Cleanup photo" 
                         className="w-16 h-16 object-cover rounded-lg shadow-sm border border-blue-200"
                       />
+                    </div>
+                  ) : (
+                    <div className="ml-4 flex-shrink-0">
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg shadow-sm border border-gray-200 flex items-center justify-center">
+                        <span className="text-xs text-gray-500 text-center">No image uploaded</span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -328,12 +336,16 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                                 <p className="text-xs text-gray-500 mt-1">{cleanup.description}</p>
                                 <p className="text-xs text-blue-600 mt-1">By: {cleanup.contributorName}</p>
                               </div>
-                              {cleanup.photoUrl && (
+                              {cleanup.photoUrl ? (
                                 <img 
                                   src={cleanup.photoUrl} 
                                   alt="Cleanup photo" 
                                   className="w-16 h-16 object-cover rounded"
                                 />
+                              ) : (
+                                <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
+                                  <span className="text-xs text-gray-500 text-center">No image</span>
+                                </div>
                               )}
                             </div>
                           </div>
@@ -353,7 +365,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
             <form onSubmit={handleCleanupSubmit} className="space-y-3">
               {/* Validation Errors */}
               {validationErrors.length > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 sticky top-0 z-10">
                   <div className="flex items-center mb-2">
                     <span className="text-red-600 mr-2">⚠️</span>
                     <h4 className="font-semibold text-red-800">Please fix the following issues:</h4>
@@ -534,6 +546,17 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
           </div>
         )}
         
+        {/* Success Notification */}
+        {showSuccessNotification && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
+            <div className="flex items-center">
+              <span className="text-xl mr-2">🎉</span>
+              <span className="font-semibold">Cleanup saved successfully!</span>
+            </div>
+            <p className="text-sm mt-1">Thank you for helping keep Aruba&apos;s beaches clean!</p>
+          </div>
+        )}
+        
         <Drawer open={isOpen} onOpenChange={handleCloseSheet}>
         <DrawerContent className="bg-white">
           <div className="h-[70vh] bg-white rounded-t-2xl flex flex-col">
@@ -546,7 +569,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                 ×
               </button>
               {/* Scroll indicator */}
-              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-gray-400 animate-bounce">
+              <div className="absolute bottom-2 left-2 text-gray-400 animate-bounce">
                 <div className="flex flex-col items-center">
                   <span className="text-xs">Scroll down</span>
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -586,6 +609,17 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
               </span>
             </div>
           ))}
+        </div>
+      )}
+      
+      {/* Success Notification */}
+      {showSuccessNotification && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce">
+          <div className="flex items-center">
+            <span className="text-xl mr-2">🎉</span>
+            <span className="font-semibold">Cleanup saved successfully!</span>
+          </div>
+          <p className="text-sm mt-1">Thank you for helping keep Aruba&apos;s beaches clean!</p>
         </div>
       )}
       

@@ -34,8 +34,7 @@ function MapComponent({ beaches }: MapProps) {
       fullscreenControl: true,
       zoomControl: true,
       zoomControlOptions: {
-        position: google.maps.ControlPosition.RIGHT_BOTTOM,
-        style: google.maps.ZoomControlStyle.SMALL
+        position: google.maps.ControlPosition.RIGHT_BOTTOM
       },
       mapTypeControl: true,
       streetViewControl: true,

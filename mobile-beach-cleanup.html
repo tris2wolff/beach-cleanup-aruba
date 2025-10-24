@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Beach Cleanup Aruba - Mobile</title>
+    <meta name="theme-color" content="#FF0000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Beach Cleanup Aruba">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjHboXS874vfmUjD35Y0U2P-U_IsnJQ2M&callback=initMap"></script>
+    
+    <style>
+        /* Mobile-specific styles */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .mobile-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: none;
+            padding: 16px;
+            min-height: 80px;
+        }
+        
+        .mobile-legend {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .beach-drawer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            z-index: 20;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .beach-drawer.open {
+            transform: translateY(0);
+        }
+        
+        .drawer-handle {
+            width: 40px;
+            height: 4px;
+            background: #d1d5db;
+            border-radius: 2px;
+            margin: 12px auto;
+        }
+        
+        .beach-image-full {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 0;
+        }
+        
+        .mobile-button {
+            width: 100%;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .mobile-button:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E8E);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+        
+        .btn-tertiary {
+            background: linear-gradient(135deg, #FFD93D, #FFB347);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(255, 217, 61, 0.3);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 15;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-out;
+        }
+        
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Safe area for notched devices */
+        .safe-area-top {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        .safe-area-bottom {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        /* Contact Button Styles */
+        .contact-button {
+            position: absolute;
+            top: 15px; /* Lowered by 20px from 35px */
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .contact-btn {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(78, 205, 196, 0.4);
+        }
+        
+        /* Contact Popover Styles */
+        .contact-popover {
+            position: absolute;
+            top: 65px; /* Adjusted for lowered button */
+            left: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            z-index: 1001;
+            width: 340px;
+            display: none;
+            border: none; /* Removed border completely */
+        }
+        
+        .contact-popover.show {
+            display: block;
+        }
+        
+        .contact-content {
+            padding: 24px;
+        }
+        
+        .contact-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1f2937;
+            text-align: center;
+        }
+        
+        .contact-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .contact-email {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            color: #475569;
+            margin-bottom: 24px;
+            font-size: 14px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4ECDC4;
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 15px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+        }
+        
+        .direct-contact {
+            margin-top: 16px;
+            padding: 16px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .direct-contact p {
+            margin: 0;
+            font-size: 13px;
+            color: #92400e;
+            font-weight: 500;
+        }
+        
+        .mobile-header h1 {
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4, #0891b2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
+        }
+        
+        .beach-name-large {
+            font-size: 24px !important;
+            font-weight: bold !important;
+            color: #1f2937 !important;
+            margin-bottom: 16px !important;
+        }
+        
+        .learn-more-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+        
+        .learn-more-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <div class="mobile-header safe-area-top">
+        <div class="flex items-center justify-center mb-2">
+            <span class="text-2xl mr-2">🌊</span>
+            <h1 class="text-xl font-bold text-white drop-shadow-lg">Aruba Clean Beaches</h1>
+        </div>
+        <p class="text-sm text-white drop-shadow-md text-center mb-2">Help clean our beaches and care for our environment</p>
+        <p class="text-xs text-white drop-shadow-md text-center">Tap any marker to see beach details</p>
+        <div class="text-center">
+            <button class="learn-more-btn" onclick="window.location.href='about.html'">
+                🌊 Learn More About Us
+            </button>
+        </div>
+    </div>
+    
+    <!-- Contact Us Button -->
+    <div class="contact-button">
+        <button class="contact-btn" onclick="toggleContactForm()">
+            📧 Contact Us
+        </button>
+    </div>
+    
+    <!-- Contact Form Popover -->
+    <div class="contact-popover" id="contactPopover">
+        <div class="contact-content">
+            <h3 class="contact-title">Get in Touch</h3>
+            <p class="contact-subtitle">Have questions about beach cleanups or want to report an issue? We'd love to hear from you!</p>
+            <div class="contact-email">📧 tris2wolff@gmail.com</div>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="reason">Reason for Contact</label>
+                    <select id="reason" name="reason" required>
+                        <option value="">Select a reason...</option>
+                        <option value="beach-cleanup">Report Beach Cleanup</option>
+                        <option value="report-issue">Report Beach Issue</option>
+                        <option value="volunteer">Volunteer Information</option>
+                        <option value="partnership">Partnership Inquiry</option>
+                        <option value="general">General Question</option>
+                        <option value="feedback">Website Feedback</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Tell us more about your inquiry..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+            <div class="direct-contact">
+                <p>💬 Prefer direct contact? Email us at tris2wolff@gmail.com</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map Container -->
+    <div id="map"></div>
+    
+    <!-- Mobile Legend -->
+    <div class="mobile-legend safe-area-bottom">
+        <div class="flex items-center justify-center space-x-4 text-xs">
+            <div class="flex items-center space-x-1">
+                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                <span class="text-gray-700">Recently Clean</span>
+            </div>
+            <div class="flex items-center space-x-1">
+                <div class="w-3 h-3 bg-orange-500 rounded-full"></div>
+                <span class="text-gray-700">Needs Attention</span>
+            </div>
+            <div class="flex items-center space-x-1">
+                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                <span class="text-gray-700">Urgent Cleanup</span>
+            </div>
+        </div>
+    </div>
+    
+        <!-- Beach Info Drawer -->
+        <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+        <div class="beach-drawer" id="beachDrawer">
+            <div class="drawer-handle"></div>
+            <div class="p-0">
+                <h2 class="beach-name-large px-4 pt-4" id="beachName">Beach Name</h2>
+                
+                <img class="beach-image-full mb-4" id="beachImage" src="" alt="Beach image" style="display: none;">
+                
+                <p class="text-sm text-gray-600 mb-4 px-4" id="beachDescription">Description: ...</p>
+                
+                <div class="space-y-3 px-4 pb-4">
+                    <button class="mobile-button btn-primary" onclick="addCleanup()">
+                        🧹 Add Cleanup
+                    </button>
+                    <button class="mobile-button btn-secondary" onclick="getDirections()">
+                        🧭 Get Directions
+                    </button>
+                    <button class="mobile-button btn-tertiary" onclick="seePastCleanups()">
+                        📊 See Past Cleanups
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        let map;
+        let selectedBeach = null;
+        
+        // Beach data
+        const beaches = [
+            { name: "Druif beach", lat: 12.5167, lng: -70.0333, description: "A beautiful sandy beach perfect for families." },
+            { name: "westpunt beach", lat: 12.3667, lng: -70.0167, description: "Westernmost point of Aruba with stunning sunsets." },
+            { name: "Sasariwichi Dunes", lat: 12.4833, lng: -70.0167, description: "Unique sand dunes and natural formations." },
+            { name: "Wishing rock garden", lat: 12.4500, lng: -70.0167, description: "Mystical rock formations and wishing traditions." },
+            { name: "More to the left of Aruba shack beach", lat: 12.4333, lng: -70.0167, description: "Hidden gem with pristine waters." },
+            { name: "To the left of aruba shack beach", lat: 12.4333, lng: -70.0167, description: "Quiet beach area with excellent snorkeling." },
+            { name: "Aruba shack beach", lat: 12.4333, lng: -70.0167, description: "Popular beach with beach shack amenities." },
+            { name: "Didi beach", lat: 12.4167, lng: -70.0167, description: "Local favorite with calm waters." },
+            { name: "to the left of urirama", lat: 12.4000, lng: -70.0167, description: "Secluded beach area with natural beauty." },
+            { name: "Urirama beach", lat: 12.4000, lng: -70.0167, description: "Picturesque beach with clear blue waters." },
+            { name: "wariruri beach", lat: 12.3833, lng: -70.0167, description: "Rocky coastline with dramatic views." },
+            { name: "between ranchero curason and urirama", lat: 12.3900, lng: -70.0167, description: "Scenic beach between two landmarks." },
+            { name: "ranchero curason", lat: 12.3800, lng: -70.0167, description: "Historic area with cultural significance." },
+            { name: "Three black stones", lat: 12.3700, lng: -70.0167, description: "Famous landmark with three distinctive stones." },
+            { name: "Fisherman house", lat: 12.3600, lng: -70.0167, description: "Traditional fishing area with local charm." },
+            { name: "klif", lat: 12.3500, lng: -70.0167, description: "Cliff area with breathtaking ocean views." },
+            { name: "Clif Beach", lat: 12.3500, lng: -70.0167, description: "Beach at the base of dramatic cliffs." },
+            { name: "xyqu trail", lat: 12.3400, lng: -70.0167, description: "Hiking trail leading to secluded beaches." },
+            { name: "medium size beach", lat: 12.3300, lng: -70.0167, description: "Moderate-sized beach with good facilities." },
+            { name: "To the right of wariruri", lat: 12.3750, lng: -70.0167, description: "Eastern side of Wariruri area." },
+            { name: "to the left of clif", lat: 12.3450, lng: -70.0167, description: "Western side of cliff area." }
+        ];
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 12.57, lng: -70.01 },
+                zoom: 12,
+                mapTypeId: 'satellite',
+                gestureHandling: 'greedy',
+                fullscreenControl: true,
+                zoomControl: true,
+                mapTypeControl: true,
+                streetViewControl: true,
+                rotateControl: true,
+                scaleControl: true
+            });
+
+            // Add markers for each beach
+            beaches.forEach((beach, index) => {
+                const marker = new google.maps.Marker({
+                    position: { lat: beach.lat, lng: beach.lng },
+                    map: map,
+                    title: beach.name,
+                    icon: {
+                        path: 'M12,2 C7.58,2 4,5.58 4,10 c0,6 8,14 8,14 s8,-8 8,-14 C20,5.58 16.42,2 12,2 z M12,12 C10.9,12 10,11.1 10,10 s0.9,-2 2,-2 s2,0.9 2,2 S13.1,12 12,12 z',
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.85,
+                        strokeColor: '#FFFFFF',
+                        strokeWeight: 1,
+                        scale: 1.5,
+                        anchor: new google.maps.Point(12, 24)
+                    }
+                });
+
+                marker.addListener('click', () => {
+                    selectedBeach = beach;
+                    showBeachInfo(beach);
+                });
+            });
+
+            // Fit map to show all markers
+            const bounds = new google.maps.LatLngBounds();
+            beaches.forEach(beach => bounds.extend({ lat: beach.lat, lng: beach.lng }));
+            map.fitBounds(bounds);
+        }
+
+        function showBeachInfo(beach) {
+            document.getElementById('beachName').textContent = beach.name;
+            document.getElementById('beachDescription').textContent = beach.description;
+            
+            const imageElement = document.getElementById('beachImage');
+            if (beach.image) {
+                imageElement.src = beach.image;
+                imageElement.style.display = 'block';
+            } else {
+                imageElement.style.display = 'none';
+            }
+            
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('beachDrawer').classList.add('open');
+        }
+
+        function closeDrawer() {
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('beachDrawer').classList.remove('open');
+        }
+
+        function addCleanup() {
+            alert('Add Cleanup functionality would be implemented here for: ' + selectedBeach.name);
+        }
+
+        function getDirections() {
+            if (selectedBeach) {
+                const url = `https://www.google.com/maps/dir/?api=1&destination=${selectedBeach.lat},${selectedBeach.lng}`;
+                window.open(url, '_blank');
+            }
+        }
+
+        function seePastCleanups() {
+            alert('See Past Cleanups functionality would be implemented here for: ' + selectedBeach.name);
+        }
+        
+        function toggleContactForm() {
+            const popover = document.getElementById('contactPopover');
+            popover.classList.toggle('show');
+        }
+        
+        // Close contact form when clicking outside
+        document.addEventListener('click', function(event) {
+            const contactButton = document.querySelector('.contact-button');
+            const contactPopover = document.getElementById('contactPopover');
+            
+            if (!contactButton.contains(event.target) && !contactPopover.contains(event.target)) {
+                contactPopover.classList.remove('show');
+            }
+        });
+
+        // Prevent zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

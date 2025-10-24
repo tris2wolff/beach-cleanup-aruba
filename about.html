@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Aruba Clean Beaches</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe, #dbeafe);
+            min-height: 100vh;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="bg-white shadow-lg">
+        <div class="px-6 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <span class="text-2xl mr-2">🌊</span>
+                    <h1 class="text-xl font-bold gradient-text">Aruba Clean Beaches</h1>
+                </div>
+                <button 
+                    onclick="window.location.href='mobile-beach-cleanup.html'"
+                    class="bg-gradient-to-r from-blue-400 to-cyan-500 hover:from-blue-500 hover:to-cyan-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg transition-all duration-200"
+                >
+                    🏠 Back to Map
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="px-6 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4 text-center">Our Mission</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                At Aruba Clean Beaches, we are passionate about preserving the natural beauty of Aruba's coastline. 
+                Our mission is to create a community-driven platform that empowers locals and visitors to actively 
+                participate in beach cleanup efforts while tracking the health and cleanliness of our precious beaches.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+                We believe that every small action counts. By providing an interactive map showing beach conditions 
+                and organizing cleanup events, we're building a sustainable future for Aruba's marine ecosystem.
+            </p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                🧹 <span class="ml-2">Cleanup Tracking</span>
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Our interactive map shows real-time beach conditions with color-coded markers:
+            </p>
+            <div class="space-y-3">
+                <div class="flex items-center">
+                    <span class="w-4 h-4 bg-green-500 rounded-full mr-3"></span>
+                    <span class="text-gray-700"><strong>Green:</strong> Recently cleaned (less than 45 days)</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="w-4 h-4 bg-orange-400 rounded-full mr-3"></span>
+                    <span class="text-gray-700"><strong>Orange:</strong> Moderate condition (45-90 days)</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="w-4 h-4 bg-red-500 rounded-full mr-3"></span>
+                    <span class="text-gray-700"><strong>Red:</strong> Needs urgent cleanup (90+ days)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                🌊 <span class="ml-2">Community Impact</span>
+            </h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                Since our launch, our community has made a significant impact:
+            </p>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="text-center p-4 bg-blue-50 rounded-lg">
+                    <div class="text-xl font-bold text-blue-600">21</div>
+                    <div class="text-xs text-gray-600">Beaches Monitored</div>
+                </div>
+                <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-xl font-bold text-green-600">50+</div>
+                    <div class="text-xs text-gray-600">Cleanups Organized</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+            <h3 class="text-xl font-bold text-gray-900 mb-4 text-center">How You Can Help</h3>
+            <div class="space-y-4">
+                <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl">
+                    <div class="text-3xl mb-2">📍</div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Report Cleanups</h4>
+                    <p class="text-gray-700 text-sm">
+                        Click on any beach marker to report your cleanup activities and help keep our data current.
+                    </p>
+                </div>
+                <div class="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                    <div class="text-3xl mb-2">🤝</div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Join Events</h4>
+                    <p class="text-gray-700 text-sm">
+                        Participate in organized cleanup events and connect with like-minded environmental advocates.
+                    </p>
+                </div>
+                <div class="text-center p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl">
+                    <div class="text-3xl mb-2">📢</div>
+                    <h4 class="text-lg font-semibold text-gray-900 mb-2">Spread Awareness</h4>
+                    <p class="text-gray-700 text-sm">
+                        Share our platform with friends and family to grow our community of beach protectors.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl shadow-xl p-6 text-white text-center">
+            <h3 class="text-xl font-bold mb-3">Ready to Make a Difference?</h3>
+            <p class="text-sm mb-4 opacity-90">
+                Join our community of beach protectors and help keep Aruba's coastline pristine for future generations.
+            </p>
+            <button 
+                onclick="window.location.href='mobile-beach-cleanup.html'"
+                class="bg-white text-blue-600 hover:bg-gray-100 border-0 px-6 py-2 text-sm font-semibold rounded-full"
+            >
+                🗺️ Explore Our Beach Map
+            </button>
+        </div>
+    </div>
+</body>
+</html>

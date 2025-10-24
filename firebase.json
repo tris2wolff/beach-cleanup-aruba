@@ -1,0 +1,23 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/*.mov",
+      "**/*.heic",
+      "**/*.HEIC",
+      "**/*.pdf"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      },
+      {
+        "source": "/blog",
+        "destination": "/blog.html"
+      }
+    ]
+  }
+}

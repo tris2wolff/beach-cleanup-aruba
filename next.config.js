@@ -15,6 +15,15 @@ const nextConfig = {
         fs: false,
         net: false,
         tls: false,
+        crypto: false,
+        stream: false,
+        url: false,
+        zlib: false,
+        http: false,
+        https: false,
+        assert: false,
+        os: false,
+        path: false,
       };
     }
     
@@ -24,6 +33,12 @@ const nextConfig = {
       resolve: {
         fullySpecified: false,
       },
+    });
+
+    // Exclude undici from webpack processing
+    config.externals = config.externals || [];
+    config.externals.push({
+      'undici': 'undici',
     });
 
     return config;

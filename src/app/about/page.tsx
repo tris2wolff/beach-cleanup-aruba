@@ -119,6 +119,7 @@ export default function AboutPage() {
               fileName="arubacleanbeaches.mp4"
               poster="/images/vector-wooden-sign-on-the-beach.jpg"
               className="w-full h-full"
+              fallbackUrl="https://player.vimeo.com/video/1130248629?badge=0&autopause=0&player_id=0&app_id=58479"
             />
           </div>
           <div className="p-4 text-center">

@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { FirebaseService } from '@/lib/firebase';
 
 interface VideoPlayerProps {
   fileName: string;
   poster?: string;
   className?: string;
+  fallbackUrl?: string; // Add fallback URL option
 }
 
-export default function VideoPlayer({ fileName, poster, className = '' }: VideoPlayerProps) {
+export default function VideoPlayer({ fileName, poster, className = '', fallbackUrl }: VideoPlayerProps) {
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -18,9 +18,24 @@ export default function VideoPlayer({ fileName, poster, className = '' }: VideoP
     const loadVideo = async () => {
       try {
         setLoading(true);
-        const url = await FirebaseService.getVideoUrl(fileName);
-        setVideoUrl(url);
-        setError('');
+        
+        // Try Firebase Storage first
+        try {
+          const { FirebaseService } = await import('@/lib/firebase');
+          const url = await FirebaseService.getVideoUrl(fileName);
+          setVideoUrl(url);
+          setError('');
+        } catch (firebaseError) {
+          console.log('Firebase Storage not available, using fallback');
+          
+          // Use fallback URL if provided
+          if (fallbackUrl) {
+            setVideoUrl(fallbackUrl);
+            setError('');
+          } else {
+            throw new Error('No video source available');
+          }
+        }
       } catch (err) {
         console.error('Error loading video:', err);
         setError('Failed to load video');
@@ -30,7 +45,7 @@ export default function VideoPlayer({ fileName, poster, className = '' }: VideoP
     };
 
     loadVideo();
-  }, [fileName]);
+  }, [fileName, fallbackUrl]);
 
   if (loading) {
     return (
@@ -48,6 +63,7 @@ export default function VideoPlayer({ fileName, poster, className = '' }: VideoP
       <div className={`flex items-center justify-center bg-gray-100 ${className}`}>
         <div className="text-center text-gray-600">
           <p>⚠️ {error || 'Video not available'}</p>
+          <p className="text-sm mt-2">Please upload the video to Firebase Storage</p>
         </div>
       </div>
     );

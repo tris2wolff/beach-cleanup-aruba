@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc, getDocs, query, orderBy, onSnapshot, Timestamp } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -17,6 +18,9 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore
 export const db = getFirestore(app);
+
+// Initialize Storage
+export const storage = getStorage(app);
 
 // Types
 export interface CleanupData {
@@ -56,20 +60,27 @@ export class FirebaseService {
     }
   }
 
-  // Upload image to Firebase Storage (simplified version)
-  static async uploadImage(file: File, beachName: string): Promise<string> {
+  // Upload video to Firebase Storage
+  static async uploadVideo(file: File, fileName: string): Promise<string> {
     try {
-      // For now, convert to base64 and store as data URL
-      // In production, you would upload to Firebase Storage
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          resolve(event.target?.result as string);
-        };
-        reader.readAsDataURL(file);
-      });
+      const storageRef = ref(storage, `videos/${fileName}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL;
     } catch (error) {
-      console.error('Error uploading image:', error);
+      console.error('Error uploading video:', error);
+      throw error;
+    }
+  }
+
+  // Get video URL from Firebase Storage
+  static async getVideoUrl(fileName: string): Promise<string> {
+    try {
+      const storageRef = ref(storage, `videos/${fileName}`);
+      const downloadURL = await getDownloadURL(storageRef);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error getting video URL:', error);
       throw error;
     }
   }

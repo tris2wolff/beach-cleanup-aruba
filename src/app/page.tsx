@@ -121,7 +121,7 @@ export default function HomePage() {
                           🚨 Urgent Cleanups
                         </button>
                         <button 
-                          className={`bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white px-6 py-[14px] rounded-full text-sm font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''} ml-[2px]`}
+                          className={`bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white px-6 py-[14px] rounded-full text-[15px] font-semibold shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 ${showAnimations ? 'animate-bounce spin-360' : ''} ml-[2px]`}
                           onClick={() => {
                             const contactSection = document.getElementById('contact-section');
                             if (contactSection) {

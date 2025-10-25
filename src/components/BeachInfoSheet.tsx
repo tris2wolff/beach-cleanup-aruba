@@ -226,7 +226,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         setShowCleanupForm(false);
         setShowPastCleanups(false);
         handleCloseSheet(); // Use handleCloseSheet instead of onClose directly
-      }, 1500); // Wait 1.5 seconds to show celebration, then exit
+      }, 1200); // Wait 1.2 seconds to show celebration, then exit
       
       setCleanupData({
         beach: beach.name,
@@ -250,7 +250,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
 
   const triggerConfetti = () => {
     setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 5000);
+    setTimeout(() => setShowConfetti(false), 6000);
   };
 
   const resetForm = () => {
@@ -613,7 +613,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         
         {/* Success Notification */}
         {showSuccessNotification && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '10px', marginLeft: '-3px' }}>
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '11px', marginLeft: '-13px' }}>
             <div className="flex items-center">
               <span className="text-xl mr-2">🎉</span>
               <span className="font-semibold">Cleanup saved successfully!</span>
@@ -680,7 +680,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       
       {/* Success Notification */}
       {showSuccessNotification && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px', marginLeft: '-5px' }}>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px', marginLeft: '-15px' }}>
           <div className="flex items-center">
             <span className="text-xl mr-2">🎉</span>
             <span className="font-semibold">Cleanup saved successfully!</span>

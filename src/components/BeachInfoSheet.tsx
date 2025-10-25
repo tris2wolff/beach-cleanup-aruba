@@ -594,16 +594,17 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
             {[...Array(50)].map((_, i) => (
               <div
                 key={i}
-                className="absolute animate-ping"
+                className="absolute"
                 style={{
                   left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${1 + Math.random() * 2}s`,
+                  bottom: '-20px',
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${2 + Math.random() * 2}s`,
+                  animation: 'floatUp 3s ease-out infinite',
                 }}
               >
                 <span className="text-2xl">
-                  {['🎉', '✨', '🌟', '💫', '🎊'][Math.floor(Math.random() * 5)]}
+                  {['🎈', '✨'][Math.floor(Math.random() * 2)]}
                 </span>
               </div>
             ))}
@@ -612,7 +613,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         
         {/* Success Notification */}
         {showSuccessNotification && (
-          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px' }}>
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '10px', marginLeft: '-3px' }}>
             <div className="flex items-center">
               <span className="text-xl mr-2">🎉</span>
               <span className="font-semibold">Cleanup saved successfully!</span>
@@ -660,16 +661,17 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
           {[...Array(50)].map((_, i) => (
             <div
               key={i}
-              className="absolute animate-ping"
+              className="absolute"
               style={{
                 left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${1 + Math.random() * 2}s`,
+                bottom: '-20px',
+                animationDelay: `${Math.random() * 2}s`,
+                animationDuration: `${2 + Math.random() * 2}s`,
+                animation: 'floatUp 3s ease-out infinite',
               }}
             >
               <span className="text-2xl">
-                {['🎉', '✨', '🌟', '💫', '🎊'][Math.floor(Math.random() * 5)]}
+                {['🎈', '✨'][Math.floor(Math.random() * 2)]}
               </span>
             </div>
           ))}
@@ -678,7 +680,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       
       {/* Success Notification */}
       {showSuccessNotification && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px' }}>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px', marginLeft: '-5px' }}>
           <div className="flex items-center">
             <span className="text-xl mr-2">🎉</span>
             <span className="font-semibold">Cleanup saved successfully!</span>

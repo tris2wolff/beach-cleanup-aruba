@@ -226,7 +226,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
         setShowCleanupForm(false);
         setShowPastCleanups(false);
         handleCloseSheet(); // Use handleCloseSheet instead of onClose directly
-      }, 1200); // Wait 1.2 seconds to show celebration, then exit
+      }, 1000); // Wait 1 second to show celebration, then exit
       
       setCleanupData({
         beach: beach.name,
@@ -250,7 +250,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
 
   const triggerConfetti = () => {
     setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 6000);
+    setTimeout(() => setShowConfetti(false), 7000);
   };
 
   const resetForm = () => {
@@ -575,7 +575,15 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
                       disabled={isSubmitting}
                       className="flex-1 bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 text-white border-0"
                     >
-                      {isSubmitting ? 'Saving...' : 'Save Cleanup'}
+                      {isSubmitting ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Saving...
+                        </>
+                      ) : 'Save Cleanup'}
                     </Button>
                   </div>
             </form>
@@ -680,7 +688,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       
       {/* Success Notification */}
       {showSuccessNotification && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px', marginLeft: '-15px' }}>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce" style={{ marginTop: '5px', marginLeft: '-20px' }}>
           <div className="flex items-center">
             <span className="text-xl mr-2">🎉</span>
             <span className="font-semibold">Cleanup saved successfully!</span>

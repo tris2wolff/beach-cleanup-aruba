@@ -100,7 +100,7 @@ export default function HomePage() {
             <div className={`px-6 ${isMobile ? 'py-2' : 'py-6'}`}>
                   <div className={`flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'} ${isMobile ? 'flex-row' : ''}`}>
                     <span className={`${isMobile ? 'text-3xl mr-0.5' : 'text-5xl mr-4'} ${showAnimations ? 'animate-bounce' : ''}`}>🌊</span>
-                    <h1 className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-bold bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-lg ${isMobile ? 'text-center' : ''}`}>Aruba Clean Beaches</h1>
+                    <h1 className={`${isMobile ? 'text-[1.95rem]' : 'text-4xl'} font-bold bg-gradient-to-r from-blue-300 via-cyan-300 to-blue-500 bg-clip-text text-transparent drop-shadow-lg ${isMobile ? 'text-center' : ''}`}>Aruba Clean Beaches</h1>
                     <span className={`${isMobile ? 'text-3xl ml-0.5' : 'text-5xl ml-4'} ${showAnimations ? 'animate-bounce' : ''}`}>🌊</span>
                   </div>
                   <p className={`${isMobile ? 'text-base' : 'text-lg'} text-white drop-shadow-md text-center ${isMobile ? 'mb-1' : 'mb-3'}`}>Help clean our beaches and care for our environment</p>

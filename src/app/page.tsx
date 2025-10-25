@@ -96,7 +96,7 @@ export default function HomePage() {
         `
       }} />
           {/* Header */}
-          <div className={`absolute top-0 left-0 right-0 z-10 ${isMobile ? 'pt-[57px]' : ''}`}>
+          <div className={`absolute top-0 left-0 right-0 z-10 ${isMobile ? 'pt-[54px]' : ''}`}>
             <div className={`px-6 ${isMobile ? 'py-2' : 'py-6'}`}>
                   <div className={`flex items-center justify-center ${isMobile ? 'mb-2' : 'mb-4'} ${isMobile ? 'flex-row' : ''}`}>
                     <span className={`${isMobile ? 'text-3xl mr-0.5' : 'text-5xl mr-4'} ${showAnimations ? 'animate-bounce' : ''}`}>🌊</span>

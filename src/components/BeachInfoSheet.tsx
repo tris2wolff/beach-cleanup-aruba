@@ -219,14 +219,14 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       // Show success message and confetti
       triggerConfetti();
       setShowSuccessNotification(true);
-      setTimeout(() => setShowSuccessNotification(false), 3000);
+      setTimeout(() => setShowSuccessNotification(false), isMobile ? 7000 : 3000); // Mobile: same as confetti, Desktop: 3 seconds
       
       // Auto-exit after showing celebration
       setTimeout(() => {
         setShowCleanupForm(false);
         setShowPastCleanups(false);
         handleCloseSheet(); // Use handleCloseSheet instead of onClose directly
-      }, 1000); // Wait 1 second to show celebration, then exit
+      }, isMobile ? 2000 : 1000); // Mobile: 2 seconds, Desktop: 1 second
       
       setCleanupData({
         beach: beach.name,

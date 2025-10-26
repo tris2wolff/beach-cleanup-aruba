@@ -171,7 +171,7 @@ export function BeachInfoSheet({ beach, isOpen, onClose }: BeachInfoSheetProps) 
       }
     }
     
-    if (!cleanupData.contributorName.trim()) {
+    if (!cleanupData.contributorName || !cleanupData.contributorName.trim()) {
       errors.push('Please enter your name.');
     }
     

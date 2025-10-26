@@ -113,17 +113,15 @@ export default function AboutPage() {
       <div className="w-full px-6 py-12">
         {/* Video Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-          <div className="aspect-video w-full bg-black">
-            <video 
-              controls 
-              controlsList="nodownload noplaybackrate nofullscreen" 
-              preload="metadata"
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src="/arubacleanbeaches.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+          <div className="aspect-video w-full bg-black relative">
+            <iframe
+              src="https://www.youtube.com/embed/Gz3B4fZJ-Dc?modestbranding=1&rel=0"
+              title="Aruba Clean Beaches"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute top-0 left-0 w-full h-full"
+            ></iframe>
           </div>
           <div className="p-4 text-center">
             <div className="md:hidden">

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFirebaseCleanups } from '@/hooks/useFirebase';
-import LocalVideoPlayer from '@/components/LocalVideoPlayer';
 
 export default function AboutPage() {
   const { cleanups } = useFirebaseCleanups();
@@ -115,11 +114,15 @@ export default function AboutPage() {
         {/* Video Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="aspect-video w-full bg-black">
-            <LocalVideoPlayer
-              fileName="arubacleanbeaches.mp4"
-              poster="/images/vector-wooden-sign-on-the-beach.jpg"
-              className="w-full h-full object-cover"
-            />
+            <iframe
+              src="https://www.youtube.com/embed/Gz3B4fZJ-Dc"
+              title="Aruba Clean Beaches"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="w-full h-full"
+              style={{ border: 'none' }}
+            ></iframe>
           </div>
           <div className="p-4 text-center">
             <div className="md:hidden">

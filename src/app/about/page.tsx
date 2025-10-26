@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFirebaseCleanups } from '@/hooks/useFirebase';
+import LocalVideoPlayer from '@/components/LocalVideoPlayer';
 
 export default function AboutPage() {
   const { cleanups } = useFirebaseCleanups();
@@ -114,17 +115,12 @@ export default function AboutPage() {
         {/* Video Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="aspect-video w-full bg-black">
-            <video 
-              controls 
-              controlsList="nodownload noplaybackrate" 
-              poster="/images/vector-wooden-sign-on-the-beach.jpg" 
+            <LocalVideoPlayer
+              localSrc="/arubacleanbeaches.mp4"
+              fallbackSrc="https://vimeo.com/1130248629" 
+              poster="/images/vector-wooden-sign-on-the-beach.jpg"
               className="w-full h-full object-cover"
-              preload="metadata"
-              playsInline
-            >
-              <source src="/arubacleanbeaches.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            />
           </div>
           <div className="p-4 text-center">
             <div className="md:hidden">

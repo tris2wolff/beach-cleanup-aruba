@@ -114,16 +114,17 @@ export default function AboutPage() {
         {/* Video Section */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="aspect-video w-full bg-black">
-            <iframe
-              src="https://player.vimeo.com/video/1130248629?badge=0&autopause=0&player_id=0&app_id=58479"
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              title="arubacleanbeaches"
-              className="w-full h-full"
-            ></iframe>
+            <video 
+              controls 
+              controlsList="nodownload noplaybackrate" 
+              poster="/images/vector-wooden-sign-on-the-beach.jpg" 
+              className="w-full h-full object-cover"
+              preload="metadata"
+              playsInline
+            >
+              <source src="/arubacleanbeaches.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
           <div className="p-4 text-center">
             <div className="md:hidden">

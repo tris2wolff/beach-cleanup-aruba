@@ -25,12 +25,12 @@ async function uploadVideo() {
     const storage = getStorage(app);
 
     // Path to your video file
-    const videoPath = path.join(__dirname, 'public', 'videos', 'arubacleanbeaches.mp4');
+    const videoPath = path.join(__dirname, 'public', 'arubacleanbeaches.mp4');
     
     // Check if file exists
     if (!fs.existsSync(videoPath)) {
       console.error('❌ Video file not found at:', videoPath);
-      console.log('Please make sure arubacleanbeaches.mp4 is in the public/videos/ folder');
+      console.log('Please make sure arubacleanbeaches.mp4 is in the public/ folder');
       return;
     }
 

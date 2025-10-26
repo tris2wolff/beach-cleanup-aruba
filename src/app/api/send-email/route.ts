@@ -16,8 +16,9 @@ export async function POST(request: NextRequest) {
     // Email content
     const emailData = {
       from: `Aruba Clean Beaches <${process.env.MAILGUN_FROM_EMAIL}>`,
-      to: [process.env.MAILGUN_TO_EMAIL!],
+      to: [`${name} <${email}>`, process.env.MAILGUN_TO_EMAIL!],
       subject: `New Contact Form Submission: ${subject} - ${name}`,
+      text: message,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
@@ -31,7 +32,8 @@ export async function POST(request: NextRequest) {
     };
 
     // Send email
-    await mg.messages.create(process.env.MAILGUN_DOMAIN!, emailData);
+    const data = await mg.messages.create(process.env.MAILGUN_DOMAIN!, emailData);
+    console.log('Email sent successfully:', data);
 
     return NextResponse.json({ success: true });
   } catch (error) {

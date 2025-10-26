@@ -116,8 +116,7 @@ export default function AboutPage() {
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="aspect-video w-full bg-black">
             <LocalVideoPlayer
-              localSrc="/arubacleanbeaches.mp4"
-              fallbackSrc="https://vimeo.com/1130248629" 
+              fileName="arubacleanbeaches.mp4"
               poster="/images/vector-wooden-sign-on-the-beach.jpg"
               className="w-full h-full object-cover"
             />

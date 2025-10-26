@@ -85,6 +85,21 @@ export class FirebaseService {
     }
   }
 
+  // Upload image to Firebase Storage
+  static async uploadImage(file: File, beachName: string): Promise<string> {
+    try {
+      const timestamp = Date.now();
+      const fileName = `${beachName}_${timestamp}_${file.name}`;
+      const storageRef = ref(storage, `cleanup-images/${fileName}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  }
+
   // Get all cleanups
   static async getAllCleanups(): Promise<CleanupData[]> {
     try {
